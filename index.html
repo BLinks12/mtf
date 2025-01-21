@@ -11,10 +11,10 @@
     :root {
       --bg-color: #121212;            /* Dark background */
       --text-color: #e0e0e0;          /* Light gray text */
-      --accent-color: #bb86fc;        /* Soft purple accents */
+      --accent-color: #00ff66;        /* Vibrant green accents */
       --button-bg: #1f1f1f;           /* Button background */
-      --button-hover: #3c3c3c;        /* Button hover background */
-      --border-color: #bb86fc;        /* Border accents */
+      --button-hover: #33ff99;        /* Button hover background */
+      --border-color: #00ff66;        /* Border accents */
     }
 
     /* ========== GLOBAL STYLES ========== */
@@ -377,6 +377,7 @@
 
   <!-- Generator -->
   <div class="generator" id="generator-section" style="display: none;">
+    <label for="mtf-id" style="display:none;">MTF ID</label>
     <input type="text" id="mtf-id" placeholder="> Enter your unique ID...">
     <button id="generate-button">CREATE MTF</button>
   </div>
@@ -390,7 +391,7 @@
   <!-- MTF Showcase -->
   <div class="mtf-showcase" id="mtf-showcase" style="display: none;">
     <h2>Your MuskTrumpFarts Companion</h2>
-    <!-- Generated ASCII MTF will appear here -->
+    <!-- Generated MTF will appear here -->
   </div>
 
   <!-- Log Area -->
@@ -404,7 +405,7 @@
       <li><strong>Connect Wallet</strong>: Use your Phantom wallet to link into the system.</li>
       <li><strong>ID Input</strong>: Provide a unique ID or default to your wallet address alone.</li>
       <li><strong>Hashing Protocol</strong>: Transforms your input into a 32-bit integer used for generating MTF data.</li>
-      <li><strong>MTF Attributes</strong>: Assigns style, hair color, trait, accessory, and “fart intensity.”</li>
+      <li><strong>MTF Attributes</strong>: Assigns archetype, hair color, accessory, and “fart intensity.”</li>
       <li><strong>Deterministic Output</strong>: The same inputs yield the same ASCII MTF, exclusively yours!</li>
     </ol>
     <p>This solution blends cryptographic determinism with a humorous twist, creating unique and memorable ASCII art pieces.</p>
@@ -472,8 +473,8 @@
       const provider = getProvider();
       if (provider) {
         try {
-          const resp = await provider.connect();
-          userWalletAddress = resp.publicKey.toString();
+          const response = await provider.connect();
+          userWalletAddress = response.publicKey.toString();
           walletAddressDisplay.textContent = `Connected: ${userWalletAddress.substring(0, 6)}...${userWalletAddress.substring(userWalletAddress.length - 4)}`;
           connectWalletButton.style.display = 'none';
           generatorSection.style.display = 'block';
@@ -507,12 +508,12 @@
             }
           });
 
-        } catch (e) {
-          console.error(e);
+        } catch (error) {
+          console.error(error);
           logMessage("Failed to connect wallet.", "error");
         }
       } else {
-        alert("Phantom Wallet not found. Please install it first.");
+        alert("Phantom Wallet not found. Please install the Phantom extension.");
         window.open("https://phantom.app/", "_blank");
       }
     }
@@ -583,7 +584,7 @@
       for (let i = 0; i < input.length; i++) {
         const char = input.charCodeAt(i);
         hash = ((hash << 5) - hash) + char;
-        hash |= 0; // 32-bit int
+        hash |= 0; // Convert to 32-bit int
       }
       return Math.abs(hash);
     }
