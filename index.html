@@ -491,6 +491,22 @@
             userWalletAddress = null;
           });
 
+          // Listen for account changes
+          provider.on("accountChanged", (newPublicKey) => {
+            if (newPublicKey) {
+              userWalletAddress = newPublicKey.toString();
+              walletAddressDisplay.textContent = `Connected: ${userWalletAddress.substring(0, 6)}...${userWalletAddress.substring(userWalletAddress.length - 4)}`;
+              logMessage("Wallet account changed.", "info");
+              checkExistingMTF(userWalletAddress);
+            } else {
+              walletAddressDisplay.textContent = '';
+              connectWalletButton.style.display = 'block';
+              generatorSection.style.display = 'none';
+              logMessage("Wallet disconnected.", "warning");
+              userWalletAddress = null;
+            }
+          });
+
         } catch (e) {
           console.error(e);
           logMessage("Failed to connect wallet.", "error");
